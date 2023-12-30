@@ -1,0 +1,82 @@
+<!-- templates/studenthub/resource_detail.html -->
+
+{% extends 'studenthub/base.html' %}
+
+{% block title %}Resource Detail - {{ resource.title }}{% endblock %}
+
+{% block content %}
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h2>{{ resource.title }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Resource details section -->
+                <p>{{ resource.description }}</p>
+                <p>Rating: {{ resource.rating }} ({{ resource.num_ratings }} votes)</p>
+                <p>Subject: {{ resource.subject }}</p>
+                <p>Course: {{ resource.course }}</p>
+                <p>School: {{ resource.school }}</p>
+                <p>Department: {{ resource.department }}</p>
+                <p>Semester: {{ resource.semester }}</p>
+                <p>Year: {{ resource.year }}</p>
+                <p>Likes: {{ resource.likes.count }}</p>
+            </div>
+            <div class="col-md-6">
+                <!-- Uploader info section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Uploader Info</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if resource.uploader.profile.profile_pic %}
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+                        {% else %}
+                            <!-- Default profile picture if none is provided -->
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+                        {% endif %}
+                        <p>Name: {{ resource.uploader.first_name }} {{ resource.uploader.last_name }}</p>
+                        <p>Email: {{ resource.uploader.email }}</p>
+                        <p>School: {{ resource.uploader.profile.school }}</p>
+                        <!-- Add more user information as needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Like/unlike button -->
+        {% if user in resource.likes.all %}
+            <a href="{% url 'like-resource' resource.id %}" class="btn btn-danger">Unlike</a>
+        {% else %}
+            <a href="{% url 'like-resource' resource.id %}" class="btn btn-info">Like</a>
+        {% endif %}
+
+        <!-- Download button -->
+        <a href="{{ resource.downloadLink }}" class="btn btn-success" target="_blank">Download</a>
+
+        <!-- Comments section -->
+        <h3>Comments</h3>
+        <ul class="list-group">
+            {% for comment in resource.comment_set.all %}
+                <li class="list-group-item">
+                    <p>{{ comment.content }}</p>
+                    <p class="text-muted">Posted by: {{ comment.poster.username }} | Posted on: {{ comment.date_posted }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Form for adding new comments -->
+        <form method="post" action="{% url 'add-comment' resource.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="comment">Add a Comment:</label>
+                <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

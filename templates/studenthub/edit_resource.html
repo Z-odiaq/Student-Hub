@@ -1,0 +1,64 @@
+<!-- templates/studenthub/edit_resource.html -->
+
+{% extends 'studenthub/base.html' %}
+
+{% block title %}Edit Resource{% endblock %}
+
+{% block content %}
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h2 class="card-title">Edit Resource</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                <input type="text" name="title" id="title" class="form-control" value="{{ resource.title }}" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                <input type="text" name="description" id="description" class="form-control" value="{{ resource.description }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.file.id_for_label }}" class="form-label">File</label>
+                <input type="file" name="file" id="file" class="form-control">
+                <small class="form-text text-muted">Leave this blank to keep the existing file.</small>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+                <input type="text" name="tags" id="tags" class="form-control" value="{{ resource.tags }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.subject.id_for_label }}" class="form-label">Subject</label>
+                <input type="text" name="subject" id="subject" class="form-control" value="{{ resource.subject }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.course.id_for_label }}" class="form-label">Course</label>
+                <input type="text" name="course" id="course" class="form-control" value="{{ resource.course }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.school.id_for_label }}" class="form-label">School</label>
+                <input type="text" name="school" id="school" class="form-control" value="{{ resource.school }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.department.id_for_label }}" class="form-label">Department</label>
+                <input type="text" name="department" id="department" class="form-control" value="{{ resource.department }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.semester.id_for_label }}" class="form-label">Semester</label>
+                <input type="text" name="semester" id="semester" class="form-control" value="{{ resource.semester }}" required>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.year.id_for_label }}" class="form-label">Year</label>
+                <input type="text" name="year" id="year" class="form-control" value="{{ resource.year }}" required>
+            </div>
+            
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

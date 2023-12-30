@@ -1,0 +1,78 @@
+{% extends 'studenthub/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="card mt-5">
+    <div class="card-header">
+        <h2>Welcome, {{ user.first_name }}!</h2>
+    </div>
+    <div class="card-body">
+
+        {% if user.profile.profile_pic %}
+            <img src="{{ user.profile.profile_pic.url }}" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+        {% elif user.profile.profile_pic and not user.profile.profile_pic.url %}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+        {% else %}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+        {% endif %}
+        <form method="post" action="{% url 'edit-profile' %}" class="mb-3"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea name="bio" id="bio" class="form-control" rows="3">{{ user.profile.bio }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" value="{{ user.first_name }}">
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" value="{{ user.last_name }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" value="{{ user.email }}">
+            </div>
+            <div class="form-group">
+                <label for="profile_pic">Profile Picture:</label>
+                <input type="file" name="profile_pic" id="profile_pic" class="form-control-file">
+            </div>
+            <div class="form-group">
+                <label for="birthday">Birthday:</label>
+                <input type="date" name="birthday" id="birthday" class="form-control" value="{{ user.profile.birthday|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group">
+                <label for="school">School:</label>
+                <input type="text" name="school" id="school" class="form-control" value="{{ user.profile.school }}">
+            </div>
+            <div class="form-group">
+                <label for="classroom">Classroom:</label>
+                <input type="text" name="classroom" id="classroom" class="form-control" value="{{ user.profile.classroom }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+
+        <h2>Your Uploads</h2>
+        <div class="row mt-3">
+            {% for resource in user.resource_set.all %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ resource.title }}</h5>
+                            <p class="card-text">{{ resource.description }}</p>
+                            <p class="card-text">Likes: {{ resource.likes.count }}</p>
+                            <p class="card-text">Subject: {{ resource.subject }}</p>
+                            <p class="card-text">Course: {{ resource.course }}</p>
+                            <a href="{% url 'resource-detail' resource.id %}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{% url 'edit-resource' resource.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'delete-resource' resource.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
