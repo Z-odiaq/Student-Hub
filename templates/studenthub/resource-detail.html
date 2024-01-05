@@ -32,10 +32,11 @@
                     </div>
                     <div class="card-body">
                         {% if resource.uploader.profile.profile_pic %}
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+                        <img src="{{ user.profile.profile_pic.url }}" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+                        {% elif resource.uploader.profile.profile_pic and not user.profile.profile_pic.url %}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
                         {% else %}
-                            <!-- Default profile picture if none is provided -->
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="Profile Picture" class="img-fluid rounded mb-3" style="max-width: 200px;">
                         {% endif %}
                         <p>Name: {{ resource.uploader.first_name }} {{ resource.uploader.last_name }}</p>
                         <p>Email: {{ resource.uploader.email }}</p>

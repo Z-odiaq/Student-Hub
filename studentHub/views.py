@@ -23,18 +23,19 @@ def home(request):
     else:
         resources = Resource.objects.all()
         
-    print("request is", search_query)
     return render(request, 'studenthub/home.html', {'resources': resources, 'search_query': search_query})
 
+@login_required
 def profile(request):
     return render(request, 'studenthub/profile.html')
 
 def resource_detail(request, resource_id):
     resource = get_object_or_404(Resource, pk=resource_id)
     return render(request, 'studenthub/resource-detail.html', {'resource': resource})
+
+@login_required
 def edit_resource(request, resource_id):
     resource = get_object_or_404(Resource, pk=resource_id)
-    print("resource is", resource)
     if request.method == 'POST':
         form = ResourceForm(request.POST, request.FILES, instance=resource)
         if form.is_valid():
@@ -95,7 +96,6 @@ def edit_profile(request):
             pro = form.save(commit=False)
             if 'profile_pic' in request.FILES:
                 pro.profile_pic = request.FILES['profile_pic']
-                random_link = get_random_string(length=20)
             pro.save()
             messages.success(request, 'Profile updated successfully.')
             return redirect('profile')
@@ -108,6 +108,7 @@ def edit_profile(request):
 
     return render(request, 'studenthub/profile.html', {'form': form})
 
+@login_required
 def add_resource(request):
     if request.method == 'POST':
         form = ResourceForm(request.POST, request.FILES)
