@@ -4,7 +4,7 @@ pipeline {
        githubPush()
     }
     environment {
-        EC2_HOST = '3.90.187.145'
+        EC2_HOST = '18.215.161.136'
         REMOTE_USER = 'ec2-user'
     }
 
