@@ -1,6 +1,6 @@
 # Student Hub
 
-StudentHub is a school mini project of an Educational Resources Platform that empowers students to share educational materials such as documents, files, and information relevant to their courses.
+Student Hub is a school mini project of an Educational Resources Platform that empowers students to share educational materials such as documents, files, and information relevant to their courses.
 
 ## Features
 
