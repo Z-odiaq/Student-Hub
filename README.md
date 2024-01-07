@@ -16,7 +16,7 @@ Ensure you have the following installed:
 
 - Python 3.x
 - Django (latest version)
-- MySQL server running (e.g use XAMPP )
+- MySQL server running 
 
 ### Installation
 
