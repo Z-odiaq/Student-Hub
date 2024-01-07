@@ -18,6 +18,4 @@ urlpatterns = [
     path('comment/<int:resource_id>/', add_comment, name='add-comment'),
     path('logout/', logout.as_view(next_page='home'), name='logout'),
     path('<str:query>/', views.home, name='home'),
-
-
 ]
