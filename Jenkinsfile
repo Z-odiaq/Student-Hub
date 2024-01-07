@@ -86,9 +86,43 @@ pipeline {
 
     post {
         always {
-            script {
-                echo 'Done.'
-            }
+            emailext (
+                subject: "Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: """
+                    <html>
+                    <head>
+                        <!-- Include Bootstrap CSS -->
+                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+                    </head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px;">
+                        <div class="container">
+                            <h2 class="text-primary">Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]</h2>
+                            
+                            <div class="mt-4">
+                                <h5 class="font-weight-bold text-info">Changes:</h5>
+                                <ul class="list-unstyled">
+                                    ${currentBuild.changeSets.collect { cs -> "<li>${cs.msg}</li>" }.join('\n')}
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h5 class="font-weight-bold text-info">Console Output:</h5>
+                                <p>
+                                    <a href='${env.BUILD_URL}console' class="text-primary">${env.BUILD_URL}console</a>
+                                </p>
+                            </div>
+                        </div>
+                    
+                        <!-- Include Bootstrap JS and Popper.js (optional) -->
+                        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+                    </body>
+                    </html>
+                """,
+                to: "mohamedammar10@live.fr",
+                mimeType: 'text/html'
+            )
         }
     }
 }
