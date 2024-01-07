@@ -1,6 +1,6 @@
 # Student Hub
 
-Student Hub is a school mini project of an Educational Resources Platform that empowers students to share educational materials such as documents, files, and information relevant to their courses.
+StudentHub is a school mini project of an Educational Resources Platform that empowers students to share educational materials such as documents, files, and information relevant to their courses.
 
 ## Features
 
@@ -16,7 +16,7 @@ Ensure you have the following installed:
 
 - Python 3.x
 - Django (latest version)
-- MySQL server running (e.g use XAMPP )
+- MySQL server running 
 
 ### Installation
 
