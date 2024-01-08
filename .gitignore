@@ -2,3 +2,5 @@
 /resources
 *.env
 *.pyc
+/__pycache__/*.pyc
+/studentHub/__pycache__/*.pyc
