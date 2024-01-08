@@ -99,13 +99,6 @@ pipeline {
                             <h2 class="text-primary">Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]</h2>
                             
                             <div class="mt-4">
-                                <h5 class="font-weight-bold text-info">Changes:</h5>
-                                <ul class="list-unstyled">
-                                    ${currentBuild.changeSets.collect { cs -> "<li>${cs.msg}</li>" }.join('\n')}
-                                </ul>
-                            </div>
-                            
-                            <div class="mt-4">
                                 <h5 class="font-weight-bold text-info">Console Output:</h5>
                                 <p>
                                     <a href='${env.BUILD_URL}console' class="text-primary">${env.BUILD_URL}console</a>
