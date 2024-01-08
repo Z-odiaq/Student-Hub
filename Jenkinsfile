@@ -63,7 +63,7 @@ pipeline {
                     sh 'tar -czf app.tar.gz .'
                     sh 'scp -o StrictHostKeyChecking=no -i $SSH_KEY app.tar.gz ec2-user@${EC2_HOST}:/home/ec2-user'
                     sh 'ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@${EC2_HOST} "tar -xzf /home/ec2-user/app.tar.gz"'
-                    //sh 'ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@${EC2_HOST} "rm /home/ec2-user/app.tar.gz"'
+                    sh 'ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@${EC2_HOST} "rm -r /home/ec2-user/app.tar.gz"'
                     }
                 }
             }
