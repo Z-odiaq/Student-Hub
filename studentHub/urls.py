@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from django.conf import settings
 
 from . import views
 
@@ -18,4 +19,9 @@ urlpatterns = [
     path('comment/<int:resource_id>/', add_comment, name='add-comment'),
     path('logout/', logout.as_view(next_page='home'), name='logout'),
     path('<str:query>/', views.home, name='home'),
+    
 ]
+
+# Add the following catch-all path for 404 redirection
+
+handler404 = 'studentHub.views.handler404'
