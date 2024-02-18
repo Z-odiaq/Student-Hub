@@ -18,12 +18,17 @@ urlpatterns = [
     path('like/<int:resource_id>/', like_resource, name='like-resource'),
     path('comment/<int:resource_id>/', add_comment, name='add-comment'),
     path('logout/', logout.as_view(next_page='home'), name='logout'),
-    path('<str:query>/', views.home, name='home'),
+    
+    path('send_message/', send_message, name='send_message'),
+    path('view_messages/', view_messages, name='view_messages'),
+    path('my-uploads/', my_uploads, name='my-uploads'),
+
 
     path('moderator/delete/resource/<int:resource_id>/', ModeratorDeleteResource, name='moderator-delete-resource'),
     path('moderator/delete/all-comments/<int:resource_id>/', ModeratorDeleteAllComments, name='moderator-delete-comments'),
     path('moderator/delete/comment/<int:comment_id>/', ModeratorDeleteComment, name='moderator-delete-comment'),
     path('moderator/block/user/<int:resource_id>/', ModeratorBlockUser, name='moderator-block-user'),
+    path('<str:query>/', views.home, name='home'),
 
 ]
 

@@ -6,33 +6,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}StudentHub{% endblock %}</title>
-    <!-- Add your CSS styles and Bootstrap CDN link here -->
+    <!-- Add your CSS styles, Bootstrap CDN link, and Font Awesome link here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"> <!-- Font Awesome link -->
     {% block styles %}{% endblock %}
 </head>
 <body>
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light {% if user.is_authenticated and user.profile.role == 'MOD' %} bg-warning {% else %}  bg-light {% endif %}">
-    <a class="navbar-brand" href="{% url 'home' %}">StudentHub </a>
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <i class="fas fa-graduation-cap"></i> StudentHub <!-- Graduation cap icon -->
+    </a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    <a class="nav-link" href="{% url 'profile' %}">
+                        <i class="fas fa-user"></i> Profile <!-- User icon -->
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'add-resource' %}">Add Resource</a>
+                    <a class="nav-link" href="{% url 'add-resource' %}">
+                        <i class="fas fa-plus"></i> Add Resource <!-- Plus icon -->
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>                
+                    <a class="nav-link" href="{% url 'my-uploads' %}">
+                        <i class="fas fa-book"></i> My Uploads <!-- Book icon -->
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'send_message' %}" class="nav-link">
+                        <i class="fas fa-envelope"></i> Send Message <!-- Envelope icon -->
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_messages' %}">
+                        <i class="fas fa-inbox"></i> Inbox <!-- Inbox icon -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt"></i> Logout <!-- Sign out icon -->
+                    </a>
+                </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="fas fa-sign-in-alt"></i> Login <!-- Sign in icon -->
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    <a class="nav-link" href="{% url 'register' %}">
+                        <i class="fas fa-user-plus"></i> Register <!-- User plus icon -->
+                    </a>
                 </li>
             {% endif %}
         </ul>

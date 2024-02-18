@@ -1,0 +1,39 @@
+<!-- gestion_blog/templates/gestion_blog/view_messages.html -->
+
+{% include 'studenthub/base.html' %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <h2><i class="fas fa-inbox"></i> Received Messages</h2>
+                {% for message in received_messages %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-user"></i> {{ message.sender.username }} sent:
+                            </h5>
+                            <p class="card-text">{{ message.content }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h2><i class="fas fa-paper-plane"></i> Sent Messages</h2>
+                {% for message in sent_messages %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">
+                                <i class="fas fa-user"></i> Sent to {{ message.recipient.username }}:
+                            </h5>
+                            <p class="card-text">{{ message.content }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

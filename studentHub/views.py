@@ -4,7 +4,7 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
-from .forms import ResourceForm
+from .forms import MessageForm, ResourceForm
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
@@ -210,3 +210,65 @@ def ModeratorBlockUser(request, resource_id):
     profile.save()
     return redirect('resource-detail', resource_id=resource_id)
 
+@login_required
+def send_meszsage(request, recipient_username):
+    users = User.objects.all()  # Fetch all users
+    context = {'users': users}
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data['content']
+            recipient = User.objects.get(username=recipient_username)
+
+            # Create and save the message
+            Message.objects.create(sender=request.user, recipient=recipient, content=content)
+
+            return redirect('view_messages')  # Redirect to the view_messages page after sending the message
+    else:
+        form = MessageForm()
+
+    context = {'form': form, 'recipient_username': recipient_username}
+    return render(request, 'studenthub/send_message.html', context)
+@login_required
+def view_messages(request):
+    received_messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
+    sent_messages = Message.objects.filter(sender=request.user).order_by('-timestamp')
+    # Ajoutez ici la logique pour afficher les messages dans le modèle de messagerie
+    return render(request, 'studenthub/view_messages.html', {'received_messages': received_messages,'sent_messages': sent_messages})
+def my_view(request):
+    users = User.objects.all()  # Fetch all users
+    context = {'users': users}
+    return render(request, 'my_template.html', context)
+
+def send_message(request):
+    # If a recipient_username is provided, fetch the User object
+    recipient = None
+
+
+    # Handle POST request: sending a message
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            # Assuming the form saves the message to the database
+            message = form.save(commit=False)
+            message.sender = request.user  # Set the sender to the current user
+            message.recipient = recipient  # Set the recipient
+            message.save()
+            # Redirect to a new URL, maybe a confirmation page or back to the form
+            return redirect('view_messages')  # Replace 'success_page' with your actual success page's name
+    else:
+        form = MessageForm()
+
+    # Fetch all users for the recipient dropdown, excluding the current user
+    users = User.objects.exclude(username=request.user.username)
+
+    context = {
+        'form': form,
+        'users': users,
+        'recipient': recipient,
+    }
+    return render(request, 'studenthub/send_message.html', context)
+
+def my_uploads(request):
+    resources = Resource.objects.filter(uploader=request.user)
+    return render(request, 'studenthub/myuploads.html', {'resources': resources})

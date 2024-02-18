@@ -3,6 +3,7 @@
 from django import forms
 from .models import *
 
+
 class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource
@@ -48,3 +49,10 @@ class UserProfileForm(forms.ModelForm):
         user.save()
 
         return super(UserProfileForm, self).save(commit)
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
