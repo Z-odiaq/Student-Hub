@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -7,10 +8,11 @@ from .forms import ResourceForm
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from .forms import UserProfileForm
 from django.contrib.auth.views import LogoutView
+from django.views.generic import DeleteView
 
 
 def home(request):
@@ -155,10 +157,21 @@ def custom_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        try:
+            userChk = User.objects.get(username=username)
+            if ( userChk is not None and hasattr(userChk, 'profile') and userChk.profile.blocked):
+                return render(request, 'studenthub/blocked.html')
+        except:
+            return render(request, 'studenthub/login.html')
+
+        
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            if ( user.is_staff) :
+                return HttpResponseRedirect(reverse('admin:index'))
+            else:                
+                return redirect('home')
     return render(request, 'studenthub/login.html')
 
 class logout(LogoutView):
@@ -169,7 +182,31 @@ class logout(LogoutView):
 
         return response
 
-from django.shortcuts import render
 
-def handler404(request, exception):
-    return render(request, '404.html', status=404)
+
+def ModeratorDeleteComment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    comment.delete()
+    return redirect('resource-detail', resource_id=comment.resource.id)
+
+def ModeratorDeleteResource(request, resource_id):
+    resource = get_object_or_404(Resource, id=resource_id)
+    resource.delete()
+    return redirect('home') 
+
+def ModeratorDeleteAllComments(request, resource_id):
+    resource = get_object_or_404(Resource, id=resource_id)
+    resource.comment_set.all().delete()
+    return redirect('resource-detail', resource_id=resource_id)
+
+def ModeratorBlockUser(request, resource_id):
+    user_id = get_object_or_404(Resource, id=resource_id).uploader.id
+    user = get_object_or_404(User, id=user_id)
+    profile = user.profile
+    if profile.blocked:
+        profile.blocked = False
+    else:
+        profile.blocked = True
+    profile.save()
+    return redirect('resource-detail', resource_id=resource_id)
+

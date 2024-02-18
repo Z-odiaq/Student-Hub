@@ -49,6 +49,8 @@ class Profile(models.Model):
     birthday = models.DateField(default='2000-01-01')  
     email = models.CharField(max_length=1000, default='') 
     classroom = models.CharField(max_length=1000, default='')
+    role = models.CharField(max_length=100, default='Student')
+    blocked = models.BooleanField(default=False)
 
     
     def __str__(self):

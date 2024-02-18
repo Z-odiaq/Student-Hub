@@ -13,7 +13,7 @@
 <body>
 
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light {% if user.is_authenticated and user.profile.role == 'MOD' %} bg-warning {% else %}  bg-light {% endif %}">
     <a class="navbar-brand" href="{% url 'home' %}">StudentHub </a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
